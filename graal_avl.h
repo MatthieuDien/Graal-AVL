@@ -19,8 +19,8 @@ void avl_erase_tree(avl_tree t);
 
 void* avl_search(avl_tree tree, void* data);
 
-void* avl_remove(avl_tree tree, void* data);
+avl_tree avl_insert(avl_tree tree, void* data);
 
-void avl_insert(avl_tree tree, void* data);
+avl_tree avl_remove(avl_tree tree, void* data);
 
 #endif

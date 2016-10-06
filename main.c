@@ -14,7 +14,7 @@
 
 int main(int argc, char* argv[])
 {
-  int n, k = 0;
+  int n, nbr = 0, nbs = 0;
   avl_tree t;
   clock_t start_time;
   float total_time;
@@ -37,8 +37,14 @@ int main(int argc, char* argv[])
       
       if(rand() % 100 == 42)
         {
-          k += 1;
+          nbr += 1;
           avl_remove(t, (void*)(intptr_t)rand());
+        }
+
+      if(rand() % 100 == 17)
+        {
+          nbs += 1;
+          avl_search(t, (void*)(intptr_t)rand());
         }
     }
 
@@ -46,7 +52,7 @@ int main(int argc, char* argv[])
 
   avl_erase_tree(t);
   
-  printf("I realized %d insertions and %d deletions in %f seconds\n", n, k, total_time);
+  printf("I did:\n- %d insertions\n- %d deletions\n- %d research\n in %f seconds\n", n, nbr, nbs, total_time);
   
   return 0;
 }

@@ -32,6 +32,7 @@ avl_node make_node(void* data)
   
   r->data = data;
   r->balance = 0;
+  r->sons[0] = r->sons[1] = NULL;
   return r;
 }
 
@@ -51,6 +52,7 @@ void erase_tree(avl_node root)
 {
   if(root != NULL) {
     avl_node l = root->sons[0], r = root->sons[1];
+    
     free(root);
     erase_tree(l);
     erase_tree(r);
@@ -82,7 +84,7 @@ void* search_r(avl_node root, void* data)
   
 void* avl_search(avl_tree tree, void* data)
 {
-  return search_r(data, tree->root);
+  return search_r(tree->root, data);
 }
 
 
@@ -226,9 +228,11 @@ void insert_node(avl_node root, void* data)
     }
 }
 
-void avl_insert(avl_tree tree, void* data)
+avl_tree avl_insert(avl_tree tree, void* data)
 {
   insert_node(tree->root, data);
+
+  return tree;
 }
 
 
@@ -315,9 +319,11 @@ avl_node remove_node(avl_node root, void* data, int* done)
   return root;
 }
 
-void avl_remove(avl_tree tree, void* data)
+avl_tree avl_remove(avl_tree tree, void* data)
 {
   int done = 0;
-
+  
   remove_node(tree->root, data, &done);
+
+  return tree;
 }
