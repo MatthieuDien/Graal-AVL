@@ -109,6 +109,17 @@ avl_node double_rotation(avl_node root, int dir)
 {
   root->sons[!dir] = single_rotation(root->sons[!dir], !dir);
   return single_rotation(root, dir);
+  /* avl_node save = root->sons[!dir]->sons[dir]; */
+
+  /* root->sons[!dir]->sons[dir] = save->sons[!dir]; */
+  /* save->sons[!dir] = root->sons[!dir]; */
+  /* root->sons[!dir] = save; */
+
+  /* save = root->sons[!dir]; */
+  /* root->sons[!dir] = save->sons[dir]; */
+  /* save->sons[dir] = root; */
+
+  /* return save; */
 }
 
 /* Adjust the balances before the application of double_rotation
@@ -320,7 +331,12 @@ avl_node remove_node(avl_node root, void* data, int* done)
             root = remove_balance(root, dir, done);
         }
     }
+  else
+    *done = 1;
+    
+    
 
+  
   return root;
 }
 
@@ -328,7 +344,7 @@ avl_tree avl_remove(avl_tree tree, void* data)
 {
   int done = 0;
   
-  remove_node(tree->root, data, &done);
+  tree->root = remove_node(tree->root, data, &done);
 
   return tree;
 }
