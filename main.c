@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
   float total_time;
     
   /* initialize random seed: */
-  srand (time(NULL));
+  srand(time(NULL));
 
   if(argc > 1)
     n = atoi(argv[1]);
@@ -33,19 +33,19 @@ int main(int argc, char* argv[])
   
   for(int i = 0; i < n; i++)
     {
-      avl_insert(t, (void*)(intptr_t)rand());
+      t = avl_insert(t, (void*)(intptr_t)rand());
       
-      if(rand() % 100 == 42)
-        {
-          nbr += 1;
-          avl_remove(t, (void*)(intptr_t)rand());
-        }
+      /* if(rand() % 100 == 42) */
+      /*   { */
+      /*     nbr += 1; */
+      /*     t = avl_remove(t, (void*)(intptr_t)rand()); */
+      /*   } */
 
-      if(rand() % 100 == 17)
-        {
-          nbs += 1;
-          avl_search(t, (void*)(intptr_t)rand());
-        }
+      /* if(rand() % 100 == 17) */
+      /*   { */
+      /*     nbs += 1; */
+      /*     avl_search(t, (void*)(intptr_t)rand()); */
+      /*   } */
     }
 
   total_time = (clock() - start_time)/((float)CLOCKS_PER_SEC);

@@ -62,6 +62,7 @@ void erase_tree(avl_node root)
 void avl_erase_tree(avl_tree tree)
 {
   erase_tree(tree->root);
+  free(tree);
 }
 
 /*******************
@@ -77,9 +78,9 @@ void* search_r(avl_node root, void* data)
       return root->data;
     else
       if ((intptr_t)data < (intptr_t)root->data)
-        return search_r(data, root->sons[0]);
+        return search_r(root->sons[0], data);
       else
-        return search_r(data, root->sons[1]);
+        return search_r(root->sons[1], data);
 }
   
 void* avl_search(avl_tree tree, void* data)
@@ -106,8 +107,8 @@ avl_node single_rotation(avl_node root, int dir)
 // dir == 0 means right-left and 1 means left-right
 avl_node double_rotation(avl_node root, int dir)
 {
-    root = single_rotation(root->sons[!dir], !dir);
-    return single_rotation(root, dir);
+  root->sons[!dir] = single_rotation(root->sons[!dir], !dir);
+  return single_rotation(root, dir);
 }
 
 /* Adjust the balances before the application of double_rotation
@@ -170,7 +171,7 @@ avl_node insert_balance(avl_node root, int dir)
     return root;
 }
 
-void insert_node(avl_node root, void* data)
+avl_node insert_node(avl_node root, void* data)
 {
   /* Empty tree case */
   if(root == NULL)
@@ -226,12 +227,16 @@ void insert_node(avl_node root, void* data)
       else
         t->sons[q == t->sons[1]] = s;
     }
+
+  return root;
 }
 
 avl_tree avl_insert(avl_tree tree, void* data)
 {
-  insert_node(tree->root, data);
+  avl_node root = insert_node(tree->root, data);
 
+  tree->root = root;
+  
   return tree;
 }
 
@@ -326,4 +331,25 @@ avl_tree avl_remove(avl_tree tree, void* data)
   remove_node(tree->root, data, &done);
 
   return tree;
+}
+
+/*******************
+*      Debug       *
+*******************/
+
+void traverse(avl_node root)
+{
+  if(root != NULL)
+    {
+      traverse(root->sons[0]);
+      printf("%d ", (int)(intptr_t)root->data);
+      traverse(root->sons[1]);
+    }
+}
+      
+void avl_traverse_and_print(avl_tree tree)
+{
+  printf("[ ");
+  traverse(tree->root);
+  printf("]\n");
 }
