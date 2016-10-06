@@ -77,10 +77,10 @@ void* search_r(avl_node root, void* data)
     if (data == root->data)
       return root->data;
     else
-      if ((intptr_t)data < (intptr_t)root->data)
-        return search_r(root->sons[0], data);
-      else
-        return search_r(root->sons[1], data);
+      {
+	int dir = (intptr_t)root->data < (intptr_t)data;
+        return search_r(root->sons[dir], data);
+      }
 }
   
 void* avl_search(avl_tree tree, void* data)
